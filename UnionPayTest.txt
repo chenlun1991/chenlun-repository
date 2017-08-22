@@ -1,0 +1,147 @@
+
+
+import java.util.Scanner;
+
+public class UnionPayTest {
+
+	public static void main(String[] args) {
+
+		ABCATM atm = new ABCATM();
+		UnionPay card = new ABCImpl("123456",4000);
+		System.out.println("请插入您的卡，请您输入密码:");
+		atm.insertcard(card);
+
+		atm.menu();
+
+
+
+	}
+
+}
+//农行ATM机系统
+class ABCATM{
+	private UnionPay card;
+	public void insertcard(UnionPay card){
+		if(card!=null){
+			this.card=card;
+		}
+	}  
+	public void Outcard(){
+		card=null;
+	}
+	public void showbalance(){
+		System.out.println("余额为："+card.getbalance());
+	}
+	public void takeMoney(){
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入你的取款金额:");
+		double number = Double.parseDouble(input.next());
+		if(card.drawMoney(number)){
+			System.out.println("取钱成功！");
+
+		}else{
+			System.out.println("余额不足！");
+		}
+	}
+	public void payTelBill(){
+		Scanner input = new Scanner(System.in);
+		    if(card instanceof ABCImpl){
+			ABC abccard = (ABC)card;
+			System.out.println("请输入您的电话号码:");
+			String phoneNum = input.next();
+			System.out.println("请输入充值金额");
+			double sum = Double.parseDouble(input.next());
+			if(abccard.payTelBill(phoneNum,sum)){
+				System.out.println("充值成功");
+			}else{
+				System.out.println("余额不足充值失败");
+			}
+		}else{
+			System.out.println("对不起您的卡不是农行卡");
+		}
+	}
+	public void menu(){
+		int count=0;
+		
+		while(true){
+			Scanner input = new Scanner(System.in);
+			String pwd = input.next();
+		    if(card.checkPwd(pwd)){
+			System.out.println("请选择:\n 1.取款 2.查询余额 3.支付电话费 4.退出");
+			int choice = Integer.parseInt(input.next());
+			switch(choice){
+			case 1:takeMoney();
+			break;
+			case 2:showbalance();
+			break;
+			case 3:payTelBill();
+			break;
+			case 4: System.out.println("请取回你的卡");break;
+			default:System.out.print("非法侵入！");
+			break;
+			}
+
+		}else{
+			count++;
+			int a =3-count;
+			
+			if(a>0){
+				System.out.println("密码错误！还有"+a+"次机会!");
+			}else if (a==0){
+				System.out.println("密码错误达到3次请到柜台办理业务！");
+				break;
+			}
+		}
+		
+				
+	}
+	}
+}	
+
+interface UnionPay{
+	public double getbalance();
+	public boolean checkPwd(String input);
+	public boolean drawMoney(double number);
+}
+interface ABC extends UnionPay{
+	public boolean payTelBill(String phoneNum,double sum);
+}
+class ABCImpl implements ABC{
+	private double balance;
+	private String pwd;
+	ABCImpl(String pwd ,double balance){
+		this.balance=balance;
+		this.pwd=pwd;
+	}
+	public double getbalance(){
+		return balance;
+	}
+	public boolean checkPwd(String input){
+		if(pwd.equals(input)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	public boolean drawMoney(double number){
+		if(balance>number){
+			balance-=number;
+			return true;
+		}else{
+			return false;
+		}
+	}
+	public boolean payTelBill(String phoneNum,double sum){
+		if(phoneNum.length()==11&&(balance-=sum)>0){
+			balance-=sum;
+			return true;
+		}else{
+			return false;
+		}
+	}
+}
+
+
+
+
+

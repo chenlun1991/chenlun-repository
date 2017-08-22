@@ -1,0 +1,94 @@
+					jquery
+1.什么是jquery
+	jquery是一个优秀的java框架，一个轻量级js库。
+	它封装了js、css、dom提供了一致的简洁的api
+jquery的使用步骤：
+	1.引入jquery文件<script src="../js/jquery.1.11.1-js"></script>
+	2.使用选择器定位要操作的节点。
+	3.调用jquery方法进行操作。
+2.jquery对象；
+	jquery为了解决浏览器的兼容问题而提供的一种统一封装后的对象描述。
+	jquery提供的方法都是针对jquery对象特有的，而且大部分的返回值类型也是jquery
+	对象，所以方法可以连缀调用。即.对象.方法（）.方法（）
+	还有通过jquery选择器选中的对象为jquery对象。
+	jquery对象本质上是一个dom对象数组，它在该数组上扩展了一些操作数组中元素的方法
+	可以直接操作这个数组。
+	obj.length obj.get（index）
+dom对象和jquery对象互转
+	$(dom对象)  obj[i]
+选择器就是定位元素 施加行为。
+	使用jquery选择器可以将内容和行分离
+选择器：
+基本选择器：和css选择器一样
+层次选择器；$("div p ");$("div>p ");$("li+li ");
+过滤选择器：$("tr:first");$("tr:eq(i)");详见API内容过滤选择器：$("p:contains('月饼')");:empty
+属性过滤选择器：：[href];[href="#"];--------
+状态过滤选择器：$("input:selected");
+表单选择器：:input :radio; :checkbox;:hidden;匹配隐藏框。
+	读写节点；
+读写节点的HTML内容：
+obj.html();/obj.html("<span>123</span>");标签生效
+读写节点的文本内容：
+obj.text();obj.text("123");     	标签不生效。
+读写节点的value属性值。
+obj.val();/obj.val("abc");
+读写节点的属性值：
+obj.attr("属性名")/obj.attr("属性名","值");
+	增删节点。
+$("<span>你好</span>")。创建节点。
+	插入dom节点。
+parent.append(obj);
+parent.prepend(obj);
+brother.after(obj);
+brother.before(obj);
+	删除dom节点
+obj.remove() obj.empty() obj.remove(selector);
+
+		jquery事件处理
+
+一.事件处理
+	获取事件对象。event
+	1.动态绑定事件。
+	$obj.click(function(e){});
+	e就是事件对象。已经经过jquery对底层事件的封装
+	e.target 获取事件源，返回的是dom对象。
+	e.pagex e.pagey 获取鼠标点击的坐标。
+
+
+
+二.事件冒泡
+	子节点产生的事件会依次向上抛给父节点。
+	e.stopPropagation（）可以取消事件的冒泡。
+三.合成事件
+	模拟光标悬停事件。
+	hover(moseenter,mouseleave);
+	$(function(){
+	$('img').hover(function(){
+	$(this).width("300px");
+
+},function(){
+	$(this).width("218px");
+
+});
+	$(":button").click(function(){
+	$("img").toggle();
+});	
+});
+四.模拟操作
+	模拟光标切换操作
+      function auto_mark() {
+        var texts = $(":text");
+        var i = 0;
+        var timer = setInterval(function(){
+          if(i == texts.length) {
+            clearInterval(timer);
+          }
+          var score = Math.round(Math.random()*100);
+          texts.eq(i++).focus().val(score);
+        }, 1000);
+      }
+ jquery实现动画效果：详见API
+
+
+
+
